@@ -29,6 +29,23 @@ const Sidebar = ({ formRows, setFormRows }) => {
     { id: "range", label: "Range Slider" },
   ];
 
+  const saveForm = () => {
+    const savedForms = JSON.parse(localStorage.getItem("savedForms")) || [];
+
+    const lastSaved = savedForms[savedForms.length - 1];
+
+    const areEqual = JSON.stringify(lastSaved) === JSON.stringify(formRows);
+
+    if (areEqual) {
+      alert("No changes detected. Form not saved.");
+      return;
+    }
+
+    const newForms = [...savedForms, formRows];
+    localStorage.setItem("savedForms", JSON.stringify(newForms));
+    alert("New form version saved!");
+  };
+
   return (
     <div className="w-1/4 p-4 border-r">
       <h2 className="text-lg font-bold mb-4">Form Elements</h2>
@@ -38,16 +55,9 @@ const Sidebar = ({ formRows, setFormRows }) => {
         ))}
       </div>
 
-      <div>
+      <div className="mt-4 flex flex-col gap-2">
         <button onClick={() => setFormRows([])}>Clear</button>
-        <button
-          onClick={() => {
-            localStorage.setItem("savedForm", JSON.stringify(formRows));
-            alert("Form saved to localStorage!");
-          }}
-        >
-          Save
-        </button>
+        <button onClick={saveForm}>Save</button>
       </div>
     </div>
   );
