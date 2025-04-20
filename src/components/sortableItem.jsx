@@ -2,9 +2,9 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import FormElement from "./FormElement";
 
-const SortableItem = ({ id, type, onDelete }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+const SortableItem = ({ element, onDelete, onClick }) => {
+  const { id } = element;
+  const { attributes, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -19,11 +19,13 @@ const SortableItem = ({ id, type, onDelete }) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
-      <span {...listeners} style={{ cursor: "grab", color: "#000" }}>
-        ⠿
-      </span>
-      <FormElement type={type} />
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      onClick={() => onClick(id)}
+    >
+      <FormElement {...element} />
       <button onClick={() => onDelete(id)}>✕</button>
     </div>
   );

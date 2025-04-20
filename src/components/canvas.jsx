@@ -1,7 +1,7 @@
 import { useDroppable } from "@dnd-kit/core";
 import Row from "./Row";
 
-const Canvas = ({ formRows, onDeleteField }) => {
+const Canvas = ({ formRows, onDeleteField, onElementClick }) => {
   const { setNodeRef } = useDroppable({ id: "new-row-dropzone" });
 
   return (
@@ -22,7 +22,12 @@ const Canvas = ({ formRows, onDeleteField }) => {
     >
       <h3 style={{ color: "#000" }}>Form Builder</h3>
       {formRows.map((row) => (
-        <Row key={row.id} row={row} onDelete={onDeleteField} />
+        <Row
+          key={row.id}
+          row={row}
+          onDelete={onDeleteField}
+          onElementClick={onElementClick}
+        />
       ))}
 
       {formRows?.length < 6 && (

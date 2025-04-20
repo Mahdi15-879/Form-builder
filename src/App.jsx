@@ -7,10 +7,12 @@ import { v4 as uuidv4 } from "uuid";
 import Sidebar from "./components/Sidebar";
 import Canvas from "./components/Canvas";
 import FormElement from "./components/FormElement";
+import PropertyPanel from "./components/PropertyPanel";
 
 function App() {
   const [formRows, setFormRows] = useState([]);
   const [activeDragItem, setActiveDragItem] = useState(null);
+  const [selectedElement, setSelectedElement] = useState(null);
 
   const handleDragStart = (event) => {
     const { active } = event;
@@ -76,6 +78,32 @@ function App() {
     );
   };
 
+  const handleElementClick = (elementId) => {
+    const foundRow = formRows.find((row) =>
+      row.elements.find((item) => item.id === elementId)
+    );
+
+    const foundItem = foundRow?.elements.find((item) => item.id === elementId);
+    if (foundItem) {
+      setSelectedElement({ ...foundItem, rowId: foundRow.id });
+    }
+  };
+
+  const updateElementProperty = (updatedElement) => {
+    setFormRows((prevRows) =>
+      prevRows.map((row) =>
+        row.id === updatedElement.rowId
+          ? {
+              ...row,
+              elements: row.elements.map((el) =>
+                el.id === updatedElement.id ? updatedElement : el
+              ),
+            }
+          : row
+      )
+    );
+  };
+
   return (
     <DndContext
       collisionDetection={rectIntersection}
@@ -87,7 +115,18 @@ function App() {
         style={{ display: "flex", padding: 20, width: "100%", gap: "2rem" }}
       >
         <Sidebar formRows={formRows} setFormRows={setFormRows} />
-        <Canvas formRows={formRows} onDeleteField={handleDeleteField} />
+        <Canvas
+          formRows={formRows}
+          onDeleteField={handleDeleteField}
+          onElementClick={handleElementClick}
+        />
+        <PropertyPanel
+          element={selectedElement}
+          onUpdate={(updated) => {
+            updateElementProperty(updated);
+            setSelectedElement(updated); 
+          }}
+        />
       </div>
 
       <DragOverlay>

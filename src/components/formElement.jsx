@@ -1,72 +1,102 @@
-const FormElement = ({ type }) => {
+const FormElement = ({ type, label, placeholder, options = [] }) => {
   switch (type) {
     case "text":
       return (
-        <label>
-          Text: <input type="text" className="border p-1 ml-1" />
-        </label>
-      );
-    case "number":
-      return (
-        <label>
-          Number: <input type="number" className="border p-1 ml-1" />
-        </label>
-      );
-    case "color":
-      return (
-        <label>
-          Color: <input type="color" className="ml-1" />
-        </label>
-      );
-    case "checkbox":
-      return (
-        <label>
-          <input type="checkbox" className="mr-1" />
-          Checkbox
-        </label>
-      );
-    case "radio":
-      return (
-        <div>
-          <label>
-            <input type="radio" name="group" /> Option 1
-          </label>
-          <br />
-          <label>
-            <input type="radio" name="group" /> Option 2
-          </label>
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Text Input"}</label>
+          <input
+            type="text"
+            className="border p-2 rounded"
+            placeholder={placeholder || "Enter text..."}
+            disabled
+          />
         </div>
       );
+
+    case "number":
+      return (
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Number Input"}</label>
+          <input
+            type="number"
+            className="border p-2 rounded"
+            placeholder={placeholder || "Enter number..."}
+            disabled
+          />
+        </div>
+      );
+
+    case "color":
+      return (
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Color Picker"}</label>
+          <input type="color" disabled />
+        </div>
+      );
+
+    case "checkbox":
+      return (
+        <div className="flex items-center gap-2">
+          <input type="checkbox" disabled />
+          <label>{label || "Checkbox"}</label>
+        </div>
+      );
+
+    case "radio":
+      return (
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Radio Buttons"}</label>
+          {options.length ? (
+            options.map((opt, i) => (
+              <label key={i} className="flex items-center gap-2">
+                <input type="radio" name="radio" disabled />
+                {opt}
+              </label>
+            ))
+          ) : (
+            <span className="text-gray-500 text-sm">No options provided</span>
+          )}
+        </div>
+      );
+
     case "select":
       return (
-        <label>
-          Select:
-          <select className="border p-1 ml-1">
-            <option>Option 1</option>
-            <option>Option 2</option>
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Select Dropdown"}</label>
+          <select className="border p-2 rounded" disabled>
+            {options.length ? (
+              options.map((opt, i) => <option key={i}>{opt}</option>)
+            ) : (
+              <option>No options</option>
+            )}
           </select>
-        </label>
+        </div>
       );
+
     case "multiselect":
       return (
-        <label>
-          Multi Select:
-          <select multiple className="border p-1 ml-1">
-            <option>Option 1</option>
-            <option>Option 2</option>
-            <option>Option 3</option>
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Multi Select"}</label>
+          <select className="border p-2 rounded" multiple disabled>
+            {options.length ? (
+              options.map((opt, i) => <option key={i}>{opt}</option>)
+            ) : (
+              <option>No options</option>
+            )}
           </select>
-        </label>
+        </div>
       );
+
     case "range":
       return (
-        <label>
-          Range:
-          <input type="range" min="0" max="100" step="5" className="ml-2" />
-        </label>
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Range Slider"}</label>
+          <input type="range" disabled />
+        </div>
       );
+
     default:
-      return null;
+      return <div>Unknown element type</div>;
   }
 };
 
