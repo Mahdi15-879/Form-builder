@@ -6,6 +6,39 @@ const PropertyPanel = ({ element, onUpdate }) => {
     onUpdate({ ...element, [name]: value });
   };
 
+  const handleOptionChange = (index, value) => {
+    const newOptions = [...(element.options || [])];
+    newOptions[index] = value;
+
+    const filteredOptions = newOptions.filter((opt) => opt?.trim());
+
+    onUpdate({ ...element, options: filteredOptions });
+  };
+
+  const renderOptionsInputs = () => {
+    const options = element.options || ["", "", ""];
+
+    while (options.length < 3) {
+      options.push("");
+    }
+
+    return (
+      <div className="space-y-2">
+        <label className="block font-medium mb-1">Options</label>
+        {options.slice(0, 3).map((opt, index) => (
+          <input
+            key={index}
+            type="text"
+            placeholder={`Option ${index + 1}`}
+            value={opt}
+            onChange={(e) => handleOptionChange(index, e.target.value)}
+            className="w-full border p-1"
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="w-1/4 p-4 border-l bg-white">
       <h3 className="text-lg font-bold mb-4">Edit Field</h3>
@@ -21,10 +54,10 @@ const PropertyPanel = ({ element, onUpdate }) => {
           />
         </div>
 
-        {element.type === "text" ||
-        element.type === "number" ||
-        element.type === "email" ||
-        element.type === "password" ? (
+        {(element.type === "text" ||
+          element.type === "number" ||
+          element.type === "email" ||
+          element.type === "password") && (
           <div>
             <label className="block font-medium">Placeholder</label>
             <input
@@ -35,7 +68,13 @@ const PropertyPanel = ({ element, onUpdate }) => {
               className="w-full border p-1"
             />
           </div>
-        ) : null}
+        )}
+
+        {(element.type === "select" ||
+          element.type === "multiselect" ||
+          element.type === "checkbox" ||
+          element.type === "radio") &&
+          renderOptionsInputs()}
       </div>
     </div>
   );

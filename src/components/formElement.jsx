@@ -36,9 +36,18 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
 
     case "checkbox":
       return (
-        <div className="flex items-center gap-2">
-          <input type="checkbox" disabled />
-          <label>{label || "Checkbox"}</label>
+        <div className="flex flex-col">
+          <label className="mb-1">{label || "Checkboxes"}</label>
+          {options.length ? (
+            options.map((opt, i) => (
+              <label key={i} className="flex items-center gap-2">
+                <input type="checkbox" disabled />
+                {opt}
+              </label>
+            ))
+          ) : (
+            <span className="text-gray-500 text-sm">No options provided</span>
+          )}
         </div>
       );
 

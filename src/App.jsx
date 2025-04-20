@@ -120,13 +120,15 @@ function App() {
           onDeleteField={handleDeleteField}
           onElementClick={handleElementClick}
         />
-        <PropertyPanel
-          element={selectedElement}
-          onUpdate={(updated) => {
-            updateElementProperty(updated);
-            setSelectedElement(updated); 
-          }}
-        />
+        {formRows?.length > 0 && (
+          <PropertyPanel
+            element={selectedElement}
+            onUpdate={(updated) => {
+              updateElementProperty(updated);
+              setSelectedElement(updated);
+            }}
+          />
+        )}
       </div>
 
       <DragOverlay>
