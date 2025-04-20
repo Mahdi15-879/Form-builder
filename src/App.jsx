@@ -6,8 +6,18 @@ import { v4 as uuidv4 } from "uuid";
 
 import Sidebar from "./components/Sidebar";
 import Canvas from "./components/Canvas";
-import FormElement from "./components/FormElement";
 import PropertyPanel from "./components/PropertyPanel";
+
+const elements = [
+  { id: "text", label: "Text Input" },
+  { id: "number", label: "Number Input" },
+  { id: "color", label: "Color Picker" },
+  { id: "checkbox", label: "Checkbox" },
+  { id: "radio", label: "Radio Buttons" },
+  { id: "select", label: "Select Dropdown" },
+  { id: "multiselect", label: "Multi Select" },
+  { id: "range", label: "Range Slider" },
+];
 
 function App() {
   const [formRows, setFormRows] = useState([]);
@@ -49,11 +59,16 @@ function App() {
 
       if (targetRowId) {
         setFormRows((prev) =>
-          prev.map((row) =>
-            row.id === targetRowId
-              ? { ...row, elements: [...row.elements, newElement] }
-              : row
-          )
+          prev.map((row) => {
+            if (row.id === targetRowId) {
+              if (row.elements.length >= 3) {
+                alert("Each row can only contain up to 3 elements.");
+                return row;
+              }
+              return { ...row, elements: [...row.elements, newElement] };
+            }
+            return row;
+          })
         );
       } else if (over.id === "new-row-dropzone") {
         setFormRows((prev) => [
@@ -76,6 +91,12 @@ function App() {
         }))
         .filter((row) => row.elements.length > 0)
     );
+
+    if (selectedElement?.id === id) {
+      setTimeout(() => {
+        setSelectedElement(null);
+      }, 0);
+    }
   };
 
   const handleElementClick = (elementId) => {
@@ -104,6 +125,11 @@ function App() {
     );
   };
 
+  const getLabelById = (id) => {
+    const found = elements.find((el) => el.id === id);
+    return found ? found.label : "Unknown Element";
+  };
+
   return (
     <DndContext
       collisionDetection={rectIntersection}
@@ -112,38 +138,49 @@ function App() {
     >
       <div
         className="app-container"
-        style={{ display: "flex", padding: 20, width: "100%", gap: "2rem" }}
+        style={{ display: "flex", padding: 20, width: "100%", gap: "1rem" }}
       >
-        <Sidebar formRows={formRows} setFormRows={setFormRows} />
+        <div className="sidebar-container">
+          <Sidebar
+            formRows={formRows}
+            setFormRows={setFormRows}
+            setSelectedElement={setSelectedElement}
+          />
+
+          {selectedElement && (
+            <PropertyPanel
+              element={selectedElement}
+              onUpdate={(updated) => {
+                updateElementProperty(updated);
+                setSelectedElement(updated);
+              }}
+            />
+          )}
+        </div>
+
         <Canvas
           formRows={formRows}
           onDeleteField={handleDeleteField}
           onElementClick={handleElementClick}
+          selectedElementId={selectedElement?.id}
         />
-        {formRows?.length > 0 && (
-          <PropertyPanel
-            element={selectedElement}
-            onUpdate={(updated) => {
-              updateElementProperty(updated);
-              setSelectedElement(updated);
-            }}
-          />
-        )}
       </div>
 
       <DragOverlay>
         {activeDragItem ? (
           <div
             style={{
-              padding: "10px 15px",
-              background: "#eee",
+              padding: "0.7rem 0",
               border: "1px solid #aaa",
-              borderRadius: "4px",
-              fontWeight: "bold",
+              borderRadius: "5px",
               minWidth: "200px",
+              backgroundColor: "#fff",
+              textAlign: "center",
+              cursor: "grab",
+              color: "#000",
             }}
           >
-            <FormElement type={activeDragItem.type} />
+            {getLabelById(activeDragItem.type)}
           </div>
         ) : null}
       </DragOverlay>

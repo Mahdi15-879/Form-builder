@@ -1,7 +1,7 @@
 import { useDroppable } from "@dnd-kit/core";
 import SortableItem from "./SortableItem";
 
-const Row = ({ row, onDelete, onElementClick }) => {
+const Row = ({ row, onDelete, onElementClick, selectedElementId }) => {
   const { setNodeRef, isOver } = useDroppable({
     id: row.id,
     data: { type: "row" },
@@ -13,14 +13,15 @@ const Row = ({ row, onDelete, onElementClick }) => {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "1rem",
+        gap: "1.5rem",
         marginBottom: "1rem",
         background: isOver ? "#e0f7ff" : "#f4f4f4",
-        padding: "20px",
+        padding: "1rem",
         border: isOver ? "2px dashed #00aaff" : "2px dashed transparent",
         borderRadius: "6px",
         minHeight: "80px",
         position: "relative",
+        marginTop: "1.5rem",
       }}
     >
       {row.elements.map((field) => (
@@ -29,6 +30,7 @@ const Row = ({ row, onDelete, onElementClick }) => {
           element={field}
           onDelete={onDelete}
           onClick={onElementClick}
+          selectedElementId={selectedElementId}
         />
       ))}
     </div>

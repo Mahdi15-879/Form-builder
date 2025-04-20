@@ -2,8 +2,8 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
   switch (type) {
     case "text":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Text Input"}</label>
+        <div className="element">
+          <label className="mb-1">{label || "Text Input: "}</label>
           <input
             type="text"
             className="border p-2 rounded"
@@ -15,8 +15,8 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
 
     case "number":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Number Input"}</label>
+        <div className="element">
+          <label className="mb-1">{label || "Number Input: "}</label>
           <input
             type="number"
             className="border p-2 rounded"
@@ -28,23 +28,25 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
 
     case "color":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Color Picker"}</label>
-          <input type="color" disabled />
+        <div className="element">
+          <label className="mb-1">{label || "Color Picker: "}</label>
+          <input type="color" />
         </div>
       );
 
     case "checkbox":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Checkboxes"}</label>
+        <div className="element">
+          <label className="mb-1">{label || "Checkboxes: "}</label>
           {options.length ? (
-            options.map((opt, i) => (
-              <label key={i} className="flex items-center gap-2">
-                <input type="checkbox" disabled />
-                {opt}
-              </label>
-            ))
+            <div className="options">
+              {options.map((opt, i) => (
+                <label key={i} className="option">
+                  <input type="checkbox" />
+                  {opt}
+                </label>
+              ))}
+            </div>
           ) : (
             <span className="text-gray-500 text-sm">No options provided</span>
           )}
@@ -53,15 +55,17 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
 
     case "radio":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Radio Buttons"}</label>
+        <div className="element">
+          <label className="mb-1">{label || "Radio Buttons: "}</label>
           {options.length ? (
-            options.map((opt, i) => (
-              <label key={i} className="flex items-center gap-2">
-                <input type="radio" name="radio" disabled />
-                {opt}
-              </label>
-            ))
+            <div className="options">
+              {options.map((opt, i) => (
+                <label key={i} className="option">
+                  <input type="radio" name="radio" />
+                  {opt}
+                </label>
+              ))}
+            </div>
           ) : (
             <span className="text-gray-500 text-sm">No options provided</span>
           )}
@@ -70,9 +74,9 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
 
     case "select":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Select Dropdown"}</label>
-          <select className="border p-2 rounded" disabled>
+        <div className="element">
+          <label className="mb-1">{label || "Select Dropdown: "}</label>
+          <select className="element-select">
             {options.length ? (
               options.map((opt, i) => <option key={i}>{opt}</option>)
             ) : (
@@ -84,9 +88,9 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
 
     case "multiselect":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Multi Select"}</label>
-          <select className="border p-2 rounded" multiple disabled>
+        <div className="element">
+          <label className="mb-1">{label || "Multi Select: "}</label>
+          <select className="element-multiselect" multiple>
             {options.length ? (
               options.map((opt, i) => <option key={i}>{opt}</option>)
             ) : (
@@ -98,9 +102,9 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
 
     case "range":
       return (
-        <div className="flex flex-col">
-          <label className="mb-1">{label || "Range Slider"}</label>
-          <input type="range" disabled />
+        <div className="element">
+          <label className="mb-1">{label || "Range Slider: "}</label>
+          <input type="range" />
         </div>
       );
 

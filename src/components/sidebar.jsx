@@ -1,23 +1,18 @@
 import { useDraggable } from "@dnd-kit/core";
 
-const Item = ({ id, label }) => {
+const Item = ({ id, label, className }) => {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id,
   });
 
   return (
-    <div
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      className="cursor-move bg-white p-3 border rounded-md shadow-sm hover:bg-gray-100"
-    >
+    <div ref={setNodeRef} {...listeners} {...attributes} className={className}>
       {label}
     </div>
   );
 };
 
-const Sidebar = ({ formRows, setFormRows }) => {
+const Sidebar = ({ formRows, setFormRows, setSelectedElement }) => {
   const elements = [
     { id: "text", label: "Text Input" },
     { id: "number", label: "Number Input" },
@@ -47,16 +42,28 @@ const Sidebar = ({ formRows, setFormRows }) => {
   };
 
   return (
-    <div className="w-1/4 p-4 border-r">
-      <h2 className="text-lg font-bold mb-4">Form Elements</h2>
-      <div className="space-y-3">
+    <div className="sidebar">
+      <h2 className="sidebar-title">Form Elements</h2>
+      <div className="sidebar-elements">
         {elements.map((el) => (
-          <Item key={el.id} id={el.id} label={el.label} />
+          <Item
+            key={el.id}
+            id={el.id}
+            label={el.label}
+            className="sidebar-element"
+          />
         ))}
       </div>
 
-      <div className="mt-4 flex flex-col gap-2">
-        <button onClick={() => setFormRows([])}>Clear</button>
+      <div className="sidebar-buttons">
+        <button
+          onClick={() => {
+            setFormRows([]);
+            setSelectedElement(null);
+          }}
+        >
+          Clear
+        </button>
         <button onClick={saveForm}>Save</button>
       </div>
     </div>

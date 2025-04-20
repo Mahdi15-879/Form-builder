@@ -23,8 +23,8 @@ const PropertyPanel = ({ element, onUpdate }) => {
     }
 
     return (
-      <div className="space-y-2">
-        <label className="block font-medium mb-1">Options</label>
+      <div className="edit-options">
+        <label>Options:</label>
         {options.slice(0, 3).map((opt, index) => (
           <input
             key={index}
@@ -40,17 +40,16 @@ const PropertyPanel = ({ element, onUpdate }) => {
   };
 
   return (
-    <div className="w-1/4 p-4 border-l bg-white">
-      <h3 className="text-lg font-bold mb-4">Edit Field</h3>
-      <div className="space-y-4">
-        <div>
-          <label className="block font-medium">Label</label>
+    <div className="edit-panel">
+      <h2 className="edit-title">Edit Panel</h2>
+      <div className="edit-body">
+        <div className="edit-label">
+          <label>Label:</label>
           <input
             type="text"
             name="label"
             value={element.label || ""}
             onChange={handleChange}
-            className="w-full border p-1"
           />
         </div>
 
@@ -58,8 +57,8 @@ const PropertyPanel = ({ element, onUpdate }) => {
           element.type === "number" ||
           element.type === "email" ||
           element.type === "password") && (
-          <div>
-            <label className="block font-medium">Placeholder</label>
+          <div className="edit-placeholder">
+            <label className="block font-medium">Placeholder:</label>
             <input
               type="text"
               name="placeholder"

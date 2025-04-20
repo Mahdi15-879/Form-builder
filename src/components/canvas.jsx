@@ -1,8 +1,13 @@
 import { useDroppable } from "@dnd-kit/core";
 import Row from "./Row";
 
-const Canvas = ({ formRows, onDeleteField, onElementClick }) => {
-  const { setNodeRef } = useDroppable({ id: "new-row-dropzone" });
+const Canvas = ({
+  formRows,
+  onDeleteField,
+  onElementClick,
+  selectedElementId,
+}) => {
+  const { setNodeRef, isOver } = useDroppable({ id: "new-row-dropzone" });
 
   return (
     <div
@@ -20,13 +25,16 @@ const Canvas = ({ formRows, onDeleteField, onElementClick }) => {
         overflowX: "hidden",
       }}
     >
-      <h3 style={{ color: "#000" }}>Form Builder</h3>
+      <h2 style={{ color: "#000", margin: "0", fontSize: "2rem" }}>
+        Form Builder
+      </h2>
       {formRows.map((row) => (
         <Row
           key={row.id}
           row={row}
           onDelete={onDeleteField}
           onElementClick={onElementClick}
+          selectedElementId={selectedElementId}
         />
       ))}
 
@@ -36,10 +44,11 @@ const Canvas = ({ formRows, onDeleteField, onElementClick }) => {
           style={{
             padding: "20px",
             marginTop: "2rem",
-            border: "2px dashed #ccc",
+            border: `2px dashed ${isOver ? "#00aaff" : "#aaa"}`,
             textAlign: "center",
-            color: "#aaa",
+            color: isOver ? "#00aaff" : "#aaa",
             borderRadius: "8px",
+            background: isOver ? "#e0f7ff" : "transparent",
           }}
         >
           Drop here to add a new row
