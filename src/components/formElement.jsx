@@ -8,7 +8,6 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
             type="text"
             className="border p-2 rounded"
             placeholder={placeholder || "Enter text..."}
-            disabled
           />
         </div>
       );
@@ -21,7 +20,6 @@ const FormElement = ({ type, label, placeholder, options = [] }) => {
             type="number"
             className="border p-2 rounded"
             placeholder={placeholder || "Enter number..."}
-            disabled
           />
         </div>
       );
