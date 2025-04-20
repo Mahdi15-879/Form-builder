@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState } from "react";
-import { DndContext, closestCenter, DragOverlay } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
+import { DndContext, rectIntersection, DragOverlay } from "@dnd-kit/core";
+
 import { v4 as uuidv4 } from "uuid";
 
 import Sidebar from "./components/Sidebar";
@@ -9,58 +9,76 @@ import Canvas from "./components/Canvas";
 import FormElement from "./components/FormElement";
 
 function App() {
-  const [formFields, setFormFields] = useState([]);
-  const [activeDragItem, setActiveDragItem] = useState(null); // 👈
+  const [formRows, setFormRows] = useState([]);
+  const [activeDragItem, setActiveDragItem] = useState(null);
 
   const handleDragStart = (event) => {
     const { active } = event;
 
-    // اگر از sidebar می‌کشیم
     if (!active.data?.current) {
       setActiveDragItem({ type: active.id });
     } else {
-      // اگر از داخل canvas می‌کشیم
-      const found = formFields.find((item) => item.id === active.id);
-      setActiveDragItem(found);
+      const foundRow = formRows.find((row) =>
+        row.elements.find((item) => item.id === active.id)
+      );
+
+      const foundItem = foundRow?.elements.find(
+        (item) => item.id === active.id
+      );
+      setActiveDragItem(foundItem || null);
     }
   };
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
+    setActiveDragItem(null);
+    if (!over) return;
 
-    setActiveDragItem(null); // reset
+    const isFromSidebar = !active.data?.current;
 
-    // Drop from sidebar into canvas
-    if (
-      active &&
-      over &&
-      active.id !== over.id &&
-      active.data?.current == null
-    ) {
-      const newField = {
+    if (isFromSidebar) {
+      const newElement = {
         id: uuidv4(),
         type: active.id,
       };
 
-      setFormFields((prev) => [...prev, newField]);
-      return;
-    }
+      const overData = over?.data?.current;
+      const targetRowId = overData?.type === "row" ? over.id : null;
 
-    // Sort inside canvas
-    if (active && over && active.data?.current && over.id !== active.id) {
-      const oldIndex = formFields.findIndex((item) => item.id === active.id);
-      const newIndex = formFields.findIndex((item) => item.id === over.id);
-      setFormFields((fields) => arrayMove(fields, oldIndex, newIndex));
+      if (targetRowId) {
+        setFormRows((prev) =>
+          prev.map((row) =>
+            row.id === targetRowId
+              ? { ...row, elements: [...row.elements, newElement] }
+              : row
+          )
+        );
+      } else if (over.id === "new-row-dropzone") {
+        setFormRows((prev) => [
+          ...prev,
+          {
+            id: uuidv4(),
+            elements: [newElement],
+          },
+        ]);
+      }
     }
   };
 
   const handleDeleteField = (id) => {
-    setFormFields((prev) => prev.filter((field) => field.id !== id));
+    setFormRows((prev) =>
+      prev
+        .map((row) => ({
+          ...row,
+          elements: row.elements.filter((el) => el.id !== id),
+        }))
+        .filter((row) => row.elements.length > 0)
+    );
   };
 
   return (
     <DndContext
-      collisionDetection={closestCenter}
+      collisionDetection={rectIntersection}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
@@ -69,10 +87,9 @@ function App() {
         style={{ display: "flex", padding: 20, width: "100%", gap: "2rem" }}
       >
         <Sidebar />
-        <Canvas formFields={formFields} onDeleteField={handleDeleteField} />
+        <Canvas formRows={formRows} onDeleteField={handleDeleteField} />
       </div>
 
-      {/* 👇 DragOverlay goes here */}
       <DragOverlay>
         {activeDragItem ? (
           <div
