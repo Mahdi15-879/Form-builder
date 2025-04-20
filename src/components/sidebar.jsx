@@ -17,7 +17,7 @@ const Item = ({ id, label }) => {
   );
 };
 
-const Sidebar = () => {
+const Sidebar = ({ formRows, setFormRows }) => {
   const elements = [
     { id: "text", label: "Text Input" },
     { id: "number", label: "Number Input" },
@@ -36,6 +36,18 @@ const Sidebar = () => {
         {elements.map((el) => (
           <Item key={el.id} id={el.id} label={el.label} />
         ))}
+      </div>
+
+      <div>
+        <button onClick={() => setFormRows([])}>Clear</button>
+        <button
+          onClick={() => {
+            localStorage.setItem("savedForm", JSON.stringify(formRows));
+            alert("Form saved to localStorage!");
+          }}
+        >
+          Save
+        </button>
       </div>
     </div>
   );

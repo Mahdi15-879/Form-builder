@@ -86,7 +86,7 @@ function App() {
         className="app-container"
         style={{ display: "flex", padding: 20, width: "100%", gap: "2rem" }}
       >
-        <Sidebar />
+        <Sidebar formRows={formRows} setFormRows={setFormRows} />
         <Canvas formRows={formRows} onDeleteField={handleDeleteField} />
       </div>
 
