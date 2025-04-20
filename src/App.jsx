@@ -40,8 +40,6 @@ function App() {
       const newField = {
         id: uuidv4(),
         type: active.id,
-        row: 0, // مقدار پیش‌فرض، بعداً قابل ویرایش توسط drag
-        col: 0,
       };
 
       setFormFields((prev) => [...prev, newField]);
@@ -68,7 +66,7 @@ function App() {
     >
       <div
         className="app-container"
-        style={{ display: "flex", padding: 20, width: "100%" }}
+        style={{ display: "flex", padding: 20, width: "100%", gap: "2rem" }}
       >
         <Sidebar />
         <Canvas formFields={formFields} onDeleteField={handleDeleteField} />
