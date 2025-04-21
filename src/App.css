@@ -3,7 +3,7 @@ body,
 #root {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   margin: 0;
   background-color: #f0f2f5;
   box-sizing: border-box;
@@ -13,8 +13,8 @@ body,
   display: flex;
   height: 100%;
   width: 100%;
-  overflow: hidden;
   box-sizing: border-box;
+  overflow-y: scroll;
 }
 
 .canvas-scroll::-webkit-scrollbar {
@@ -225,5 +225,16 @@ body,
       align-items: center;
       color: #000;
     }
+  }
+}
+
+@media (max-width: 750px) {
+  .app-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sidebar-container {
+    width: 100%;
   }
 }
