@@ -1,6 +1,14 @@
 import "./App.css";
 import { useState } from "react";
-import { DndContext, rectIntersection, DragOverlay } from "@dnd-kit/core";
+import {
+  DndContext,
+  rectIntersection,
+  DragOverlay,
+  TouchSensor,
+  MouseSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -23,6 +31,8 @@ function App() {
   const [formRows, setFormRows] = useState([]);
   const [activeDragItem, setActiveDragItem] = useState(null);
   const [selectedElement, setSelectedElement] = useState(null);
+
+  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
   const handleDragStart = (event) => {
     const { active } = event;
@@ -132,6 +142,7 @@ function App() {
 
   return (
     <DndContext
+      sensors={sensors}
       collisionDetection={rectIntersection}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
