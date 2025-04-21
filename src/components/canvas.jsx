@@ -11,7 +11,6 @@ const Canvas = ({
 
   return (
     <div
-      className="canvas-scroll"
       style={{
         flex: 1,
         height: "100%",
@@ -21,8 +20,6 @@ const Canvas = ({
         background: "#fff",
         boxSizing: "border-box",
         borderRadius: "8px",
-        overflowY: "scroll",
-        overflowX: "hidden",
       }}
     >
       <h2 style={{ color: "#000", margin: "0", fontSize: "2rem" }}>
