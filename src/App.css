@@ -237,4 +237,8 @@ body,
   .sidebar-container {
     width: 100%;
   }
+
+  .canvas-scroll {
+    min-height: fit-content;
+  }
 }
