@@ -1,9 +1,23 @@
 import { useEffect, useState } from "react";
 import FormElement from "../components/formElement";
+import download from "../assets/download.svg";
 import "../App.css";
 
 const Preview = () => {
   const [savedForms, setSavedForms] = useState([]);
+
+  const downloadFormAsJson = (form, index) => {
+    const fileData = JSON.stringify(form, null, 2);
+    const blob = new Blob([fileData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `form-${index + 1}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("savedForms")) || [];
@@ -30,9 +44,27 @@ const Preview = () => {
                 backgroundColor: "#fafafa",
               }}
             >
-              <h2 style={{ margin: "0", marginBottom: "1rem", color: "#000" }}>
-                Form #{formIndex + 1}
-              </h2>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h2
+                  style={{ margin: "0", marginBottom: "1rem", color: "#000" }}
+                >
+                  Form #{formIndex + 1}
+                </h2>
+
+                <img
+                  src={download}
+                  onClick={() => downloadFormAsJson(form, formIndex)}
+                  alt="Download Icon"
+                  style={{ width: "30px", height: "30px", cursor: "pointer" }}
+                />
+              </div>
               {form.map((row, rowIndex) => (
                 <div
                   key={rowIndex}
