@@ -31,7 +31,9 @@ const Preview = () => {
       </h1>
 
       {savedForms.length === 0 ? (
-        <p>No saved forms found.</p>
+        <p style={{ margin: "0", marginBottom: "1rem", color: "#000" }}>
+          No saved forms found.
+        </p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           {savedForms.map((form, formIndex) => (
