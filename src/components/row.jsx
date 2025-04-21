@@ -1,5 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
-import SortableItem from "./SortableItem";
+import SortableItem from "./sortableItem.jsx";
 
 const Row = ({ row, onDelete, onElementClick, selectedElementId }) => {
   const { setNodeRef, isOver } = useDroppable({

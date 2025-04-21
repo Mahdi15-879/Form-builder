@@ -1,5 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
-import Row from "./Row";
+import Row from "./row.jsx";
 
 const Canvas = ({
   formRows,

@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import FormElement from "./FormElement";
+import FormElement from "./formElement.jsx";
 
 const SortableItem = ({ element, onDelete, onClick, selectedElementId }) => {
   const { id } = element;

@@ -4,9 +4,9 @@ import { DndContext, rectIntersection, DragOverlay } from "@dnd-kit/core";
 
 import { v4 as uuidv4 } from "uuid";
 
-import Sidebar from "./components/Sidebar";
-import Canvas from "./components/Canvas";
-import PropertyPanel from "./components/PropertyPanel";
+import Sidebar from "./components/Sidebar.jsx";
+import Canvas from "./components/Canvas.jsx";
+import PropertyPanel from "./components/PropertyPanel.jsx";
 
 const elements = [
   { id: "text", label: "Text Input" },
